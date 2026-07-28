@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catan Randomizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Totally serious strategy tool</p>
+        <h1>Catan Board Randomizer</h1>
+        <p class="subtitle">Generate a fresh board using your custom hand-drawn resource tiles. Red numbers are kept apart for a fairer setup.</p>
+      </div>
+
+      <section class="controls" aria-label="Board controls">
+        <label>
+          Players
+          <select id="modeSelect">
+            <option value="34">3–4 players</option>
+            <option value="56">5–6 players</option>
+          </select>
+        </label>
+        <button id="generateButton" type="button">Randomize board</button>
+      </section>
+    </header>
+
+    <section class="board-card">
+      <div id="status" class="status" role="status">Building your board…</div>
+      <div id="board" class="board" aria-label="Randomized Catan board"></div>
+    </section>
+
+    <footer>
+      <span>Resources and number tokens are randomized.</span>
+      <span>Adjacent 6 and 8 tokens are prevented.</span>
+    </footer>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

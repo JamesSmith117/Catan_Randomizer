@@ -1,15 +1,32 @@
-# Bettercatan
+# Bettercatan / Catan Randomizer
 
-Random Catan board generator with containerized runtime and automated vulnerability scanning.
+Random Catan board generator — available as a CLI script and a Flask web app, with containerized runtime and automated vulnerability scanning.
 
-## Quick start
+## Run locally (CLI)
 
 ```bash
-# Local Python
 pip install -r requirements.txt
-python catan/catan_randomizer.py
+python catan/catan_randomizer.py --mode 34 --no-open
+```
 
-# Docker
+## Run locally (Flask site)
+
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
+source .venv/bin/activate
+
+pip install -r requirements.txt
+python app.py
+```
+
+Open `http://127.0.0.1:5000`.
+
+## Docker
+
+```bash
 docker build -t bettercatan .
 docker run --rm -v "%cd%\output:/app/output" bettercatan --mode 34 --output /app/output/catan_board.png --no-open
 
@@ -18,6 +35,14 @@ make build
 make run MODE=56
 make scan
 ```
+
+## Features
+
+- 3–4 player and 5–6 player layouts
+- Correct resource and number pools
+- Prevents adjacent 6 and 8 tokens
+- Uses custom tile artwork
+- Responsive Flask layout for desktop and mobile
 
 ## Security tooling
 

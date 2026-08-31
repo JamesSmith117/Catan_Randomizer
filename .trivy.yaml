@@ -1,0 +1,12 @@
+# Trivy configuration — https://aquasecurity.github.io/trivy/latest/references/configuration/config-file/
+scan:
+  severity:
+    - HIGH
+    - CRITICAL
+  scanners:
+    - vuln
+    - misconfig
+    - secret
+
+vulnerability:
+  ignore-unfixed: true

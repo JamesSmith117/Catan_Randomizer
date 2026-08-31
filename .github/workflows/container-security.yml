@@ -1,0 +1,55 @@
+name: Container Security
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t bettercatan:ci .
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: bettercatan:ci
+          format: sarif
+          output: trivy-results.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          scanners: vuln,misconfig,secret
+
+      - name: Upload Trivy SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+
+      - name: Fail on critical vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: bettercatan:ci
+          format: table
+          exit-code: 1
+          severity: CRITICAL
+          ignore-unfixed: true
+          scanners: vuln
+
+      - name: Scan Dockerfile and repo config
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: table
+          exit-code: 1
+          severity: HIGH,CRITICAL
